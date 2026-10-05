@@ -1,56 +1,56 @@
-# Welcome to your Expo app 👋
+# CrossPaths
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A cross-platform (iOS / Android) mobile app for discovering the people you cross paths with during the day and connecting over shared interests.
 
-## Get started
+Built solo during the 3DUPB Summer School at POLITEHNICA Bucharest (June - September 2026).
 
-1. Install dependencies
+## Features
+
+- **Onboarding** - name, role and interests, kept across screens with React context.
+- **Live map** - current location with permission handling and a recenter button (`expo-maps`, `expo-location`).
+- **Encounter trail** - every encounter is saved with its coordinates, and the day's path is drawn on the map from the first person met to your current location. Tapping a marker opens that person's profile with shared interests highlighted.
+- **History** - everyone you have met, with shared interests and the number of encounters per person.
+- **Saved people** - keep the profiles you want to follow up with.
+- **Statistics** - people met, longest streak of consecutive days, most common shared interest.
+- **Profile** - edit your details, choose an avatar (emoji and color), or reset your profile.
+
+## Tech stack
+
+| Layer | Technology |
+|---|---|
+| App | React Native, Expo (SDK 57), Expo Router, TypeScript |
+| Backend | Supabase (PostgreSQL, Auth) |
+| Maps & location | expo-maps, expo-location |
+
+## Data model
+
+- `profiles` - one row per user: name, role, interests, avatar emoji and color.
+- `encounters` - one row per encounter: who you met (`crossed_with_id`), where (`latitude`, `longitude`) and when (`seen_at`). The daily trail and the history are rebuilt from this table.
+
+## Roadmap
+
+- Bluetooth Low Energy proximity detection (`react-native-ble-plx`): devices exchange anonymous rotating IDs, and the server resolves them to profiles only on request.
+- Distance estimation from received signal strength (RSSI).
+
+## Running locally
+
+1. Install dependencies:
 
    ```bash
    npm install
    ```
 
-2. Start the app
+2. Create `.env.local` with your Supabase project:
 
    ```bash
-   npx expo start
+   EXPO_PUBLIC_SUPABASE_URL=https://<your-project>.supabase.co
+   EXPO_PUBLIC_SUPABASE_KEY=<your-anon-key>
    ```
 
-In the output, you'll find options to open the app in a
+3. Build and run on a device or simulator (a development build is required for native modules):
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-### Other setup steps
-
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+   ```bash
+   npx expo run:ios
+   # or
+   npx expo run:android
+   ```

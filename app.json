@@ -1,14 +1,15 @@
 {
   "expo": {
     "name": "CrossPaths",
-    "slug": "CrossPaths",
+    "slug": "crosspaths",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "crosspaths",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "icon": "./assets/expo.icon"
+      "icon": "./assets/expo.icon",
+      "bundleIdentifier": "com.vladparau.crosspaths"
     },
     "android": {
       "adaptiveIcon": {
@@ -17,7 +18,13 @@
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "permissions": [
+        "android.permission.BLUETOOTH",
+        "android.permission.BLUETOOTH_ADMIN",
+        "android.permission.BLUETOOTH_CONNECT"
+      ],
+      "package": "com.vladparau.crosspaths"
     },
     "web": {
       "output": "static",
@@ -32,11 +39,41 @@
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 76
         }
+      ],
+      "expo-image",
+      "expo-status-bar",
+      "expo-web-browser",
+      "expo-sqlite",
+      [
+        "react-native-ble-plx",
+        {
+          "isBackgroundEnabled": true,
+          "modes": [
+            "peripheral",
+            "central"
+          ],
+          "bluetoothAlwaysPermission": "CrossPaths uses Bluetooth to exchange anonymous signals with nearby CrossPaths users.",
+          "neverForLocation": true
+        }
+      ],
+      [
+        "expo-maps",
+        {
+          "requestLocationPermission": true,
+          "locationPermission": "Allow $(PRODUCT_NAME) to show your location on the map."
+        }
       ]
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "e85fbd48-8555-4e17-a726-f079344868d3"
+      }
+    },
+    "owner": "vladparau"
   }
 }

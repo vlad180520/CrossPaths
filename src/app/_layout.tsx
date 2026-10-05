@@ -1,18 +1,32 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useColorScheme } from 'react-native';
+import { ensureAnonymousSession } from "@/lib/supabase";
+import { ProfileProvider } from "@/state/profile";
+import { Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import { useEffect } from "react";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
-import { AnimatedSplashOverlay } from '@/components/animated-icon';
-import AppTabs from '@/components/app-tabs';
+export default function RootLayout() {
+  useEffect(() => {
+    ensureAnonymousSession().catch(() => {
+      // useOnboardingStatus (index.tsx) will retry and handle this properly;
+      // this early call is just a head start, so a failure here is silent.
+    });
+  }, []);
 
-SplashScreen.preventAutoHideAsync();
-
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <AnimatedSplashOverlay />
-      <AppTabs />
-    </ThemeProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <ProfileProvider>
+          <StatusBar style="dark" />
+          <Stack
+            screenOptions={{
+              headerShown: false,
+              // contentStyle: { backgroundColor: colors.bg },
+            }}
+          />
+        </ProfileProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 }
